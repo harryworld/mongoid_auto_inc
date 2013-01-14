@@ -28,11 +28,11 @@ module MongoidAutoInc
       end
 
       def collection
-        if ::Mongoid::VERSION < '3'
-          Mongoid.database[@collection]
-        else
+        # if ::Mongoid::VERSION < '3'
+        #   Mongoid.database[@collection]
+        # else
           Mongoid.default_session[@collection]
-        end
+        # end
       end
 
       def query
@@ -40,11 +40,11 @@ module MongoidAutoInc
       end
 
       def current
-        if ::Mongoid::VERSION < '3'
-          collection.find_one(query)["number"]
-        else
+        # if ::Mongoid::VERSION < '3'
+        #   collection.find_one(query)["number"]
+        # else
           collection.find(query).one['number']
-        end
+        # end
       end
 
       def update_number_with(mongo_func)
@@ -53,13 +53,13 @@ module MongoidAutoInc
           "update" => mongo_func,
           "new"    => true # return the modified document
         }
-        if ::Mongoid::VERSION < '3'
-          collection.find_and_modify(opts)["number"]
-        else
+        # if ::Mongoid::VERSION < '3'
+        #   collection.find_and_modify(opts)["number"]
+        # else
           collection.database.command({
             findandmodify: collection.name
           }.merge(opts))['value']['number']
-        end
+        # end
       end
     end
 
